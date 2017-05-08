@@ -33,6 +33,10 @@ $navbar-default-bg:  black;
     font-size: 1.7em;
     background-color: black;
   }
+  .article-actions {
+    border-top: 1px solid #eaeaea;
+    padding-top: 5px;
+  }
   footer {
     margin-top: 45px;
     padding-top: 5px;
@@ -47,5 +51,5 @@ $navbar-default-bg:  black;
   }
   footer ul li {
     float: right;
-    margin-left: 15px;  
+    margin-left: 15px;
   }
