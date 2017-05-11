@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 before_action :set_user, only: [:edit, :update, :show]
-before_action :require_same_user, only: [:edit,:update]
+before_action :require_same_user, only: [:edit,:update, :destroy]
+before_action :require_admin, only: [:destroy]
 
   def index
     @users = User.paginate(page: params[:page], per_page:3)
@@ -38,6 +39,7 @@ before_action :require_same_user, only: [:edit,:update]
   def destroy
     @user = User.find(params[:id])
     @user.destroy
+    flash[:danger] = "User account was saccessfuly deleted with him articles"
     redirect_to root_path
 
   end
@@ -56,9 +58,16 @@ before_action :require_same_user, only: [:edit,:update]
   end
 
   def require_same_user
-    if current_user != @user
+    if (current_user != @user && !current_user.admin?)
       flash[:danger]="You can edit only your account"
       redirect_to root_path
     end
+  end
+
+  def require_admin
+    if !logged_in? && !current_user.admin?
+      flash[:danger] = "You don't have access to this action"
+      redirect_to root_path
+    end    
   end
 end
