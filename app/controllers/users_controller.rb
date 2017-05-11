@@ -13,13 +13,14 @@ before_action :require_same_user, only: [:edit,:update]
   def create
     @user = User.new(user_params)
     if @user.save
+      session[:user_id] = @user.id
       flash[:success]="Welcome to the Alpha Blog #{@user.username}"
-      redirect_to articles_path
+      redirect_to user_path(@user)
     else
       render 'new'
     end
-
   end
+
 
   def edit
 
@@ -32,6 +33,13 @@ before_action :require_same_user, only: [:edit,:update]
     else
       render 'edit'
     end
+  end
+
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy
+    redirect_to root_path
+
   end
 
   def show
@@ -51,6 +59,6 @@ before_action :require_same_user, only: [:edit,:update]
     if current_user != @user
       flash[:danger]="You can edit only your account"
       redirect_to root_path
-    end    
+    end
   end
 end

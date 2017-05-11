@@ -12,7 +12,7 @@ class ArticlesController < ApplicationController
 
   def create
     @article = Article.new(article_params)
-    @article.user = User.first
+    @article.user = current_user
     if @article.save
       flash[:success]= "The article was succesfully created"
       redirect_to article_path(@article)
@@ -62,7 +62,7 @@ class ArticlesController < ApplicationController
       if current_user != @article.user
         flash[:danger]="You can edit only your articles"
         redirect_to root_path
-      end     
+      end
     end
 
 
